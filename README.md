@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/banner.png" alt="CATMINAL: the cat that runs my pump.fun terminal" width="100%">
+
 # CATMINAL
 
 **The cat that runs my pump.fun terminal.**
@@ -60,6 +62,7 @@ python -m playwright install chromium
 
 python scripts/render.py video            # -> out/catminal.mp4
 python scripts/render.py stills 2.9 7.3   # -> out/still_02.90.png, out/still_07.30.png
+python scripts/render.py banner           # -> assets/banner.png (1280x640)
 ```
 
 `index.html` exposes `renderAt(t)` and `frameData(t)` on `window`, so you can grab any moment of the timeline.

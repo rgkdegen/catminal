@@ -3,6 +3,7 @@
 usage:
   python scripts/render.py video            # -> out/catminal.mp4 (30s, 1080x1350, 30fps, with audio)
   python scripts/render.py stills 2.9 7.3   # -> out/still_XX.XX.png
+  python scripts/render.py banner           # -> assets/banner.png (1280x640, GitHub social preview)
 
 env:
   CHROME_PATH   optional path to a Chromium/Chrome binary (otherwise Playwright's bundled one)
@@ -35,7 +36,13 @@ def main():
         def frame(t):
             return base64.b64decode(page.evaluate(f'frameData({t})').split(',')[1])
 
-        if mode == 'stills':
+        if mode == 'banner':
+            page.add_script_tag(path=os.path.join(ROOT, 'scripts', 'banner.js'))
+            data = page.evaluate('drawBanner()')
+            path = os.path.join(ROOT, 'assets', 'banner.png')
+            open(path, 'wb').write(base64.b64decode(data.split(',')[1]))
+            print('saved', path)
+        elif mode == 'stills':
             for t in map(float, sys.argv[2:] or ['2.9', '7.3', '29.5']):
                 path = os.path.join(OUT, f'still_{t:05.2f}.png')
                 open(path, 'wb').write(frame(t))
